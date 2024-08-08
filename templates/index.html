@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        form {
+            width: 100%;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        textarea, button {
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            border: none;
+            outline: 1px solid lightgray;
+            font-size: 18px;
+            line-height: 24px;
+            font-family: sans-serif;
+        }
+
+        button {
+            background-color: royalblue;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        textarea {
+            padding: 1rem;
+        }
+    </style>
+    <title>Grandma's Heavy Metal Festival Journal</title>
+</head>
+<body>
+<form method="POST" action="/ai">
+    <textarea name="chat-prompt" placeholder="Search AI..."></textarea>
+    <button type="submit">Search</button>
+</form>
+</body>
+</html>

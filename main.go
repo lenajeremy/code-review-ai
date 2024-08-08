@@ -37,14 +37,20 @@ func main() {
 
 	model := client.GenerativeModel("gemini-1.5-flash")
 
-	//settings := genai.SafetySetting{Category: genai.HarmCategoryUnspecified, Threshold: genai.HarmBlockNone}
-	//model.SafetySettings = []*genai.SafetySetting{&settings}
+	settings := genai.SafetySetting{Category: genai.HarmCategorySexuallyExplicit, Threshold: genai.HarmBlockNone}
+	model.SafetySettings = []*genai.SafetySetting{&settings}
 
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*")
 
-	r.GET("/ai", func(c *gin.Context) {
-		resp, err := model.GenerateContent(ctx, genai.Text("Write a letter to my mother telling her i love her"))
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{})
+		return
+	})
+
+	r.POST("/ai", func(c *gin.Context) {
+		message := c.PostForm("chat-prompt")
+		resp, err := model.GenerateContent(ctx, genai.Text(message))
 
 		if err != nil {
 			log.Println("Error with model")
@@ -55,9 +61,9 @@ func main() {
 		if story, err := json.Marshal(resp.Candidates[0].Content.Parts[0]); err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 		} else {
-			log.Println(strings.Split(string(story), "\n"))
-			c.HTML(http.StatusOK, "index.tmpl", gin.H{
-				"story": strings.Join(strings.Split(string(story), "\n"), "<br />"),
+			//log.Println(strings.Split(string(story), "\n"))
+			c.HTML(http.StatusOK, "ai-response.html", gin.H{
+				"story": strings.Join(strings.Split(string(story), "\\n"), "<br />"),
 			})
 		}
 
